@@ -2,8 +2,10 @@ import re
 from random import randrange
 
 import requests
+from django.core.cache import cache
 
 from swiper import config
+from common import keys
 
 
 def is_phonenum(phonenum):
@@ -21,9 +23,13 @@ def gen_random_code(length=4):
 
 def send_vcode(phonenum):
     '''向第三方平台发送验证码'''
+    vcode = gen_random_code()
+    # 将验证码存入缓存，并设置过期时间
+    cache.set(keys.VCODE % phonenum, vcode, 180)
+
     params = config.YZX_SMS_PARAMS.copy()
     params['mobile'] = phonenum
-    params['param'] = gen_random_code()
+    params['param'] = vcode
     response = requests.post(config.YZX_SMS_API, json=params)
 
     if response.status_code == 200:
