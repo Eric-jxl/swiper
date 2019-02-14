@@ -23,3 +23,22 @@ def rcmd(user):
     ).exclude(id__in=swiped_sid_list)[:10]
 
     return users
+
+
+def like_someone(user, sid):
+    '''喜欢'''
+    # 添加滑动记录
+    Swiped.objects.create(uid=user.id, sid=sid, flag='like')
+
+    # 检查对方是否喜欢过我
+    if Swiped.is_liked(sid, uid):
+        # TODO: 如果喜欢过，建立好友关系
+        pass
+
+
+def superlike_someone(user, sid):
+    pass
+
+
+def dislike_someone(user, sid):
+    pass

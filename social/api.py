@@ -10,14 +10,17 @@ def rcmd_users(request):
 
 
 def like(request):
+    sid = request.POST.get('sid')
     return render_json()
 
 
 def superlike(request):
+    sid = request.POST.get('sid')
     return render_json()
 
 
 def dislike(request):
+    sid = request.POST.get('sid')
     return render_json()
 
 
