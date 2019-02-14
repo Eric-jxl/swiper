@@ -10,3 +10,10 @@ YZX_SMS_PARAMS = {
     "param": None,
     "mobile": None,
 }
+
+
+# 七牛云配置
+QN_ACCESS_KEY = 'kEM0sRR-meB92XU43_a6xZqhiyyTuu5yreGCbFtw'
+QN_SECRET_KEY = 'QxTKqgnOb_UVldphU261qu9IdzmjkgGHh6GQVPPy'
+QN_HOST = 'http://pmw9wikfk.bkt.clouddn.com'
+QN_BUCKET = 'sh1807'

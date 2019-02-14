@@ -1,8 +1,10 @@
 import re
+import os
 from random import randrange
 
 import requests
 from django.core.cache import cache
+from django.conf import settings
 
 from swiper import config
 from common import keys
@@ -38,3 +40,12 @@ def send_vcode(phonenum):
         if result.get('msg') == 'OK':
             return True
     return False
+
+
+def save_upload_file(filename, upload_file):
+    '''保存上传文件到本地'''
+    filepath = os.path.join(settings.BASE_DIR, settings.MEDIA_ROOT, filename)
+    with open(filepath, 'wb') as newfile:
+        for chunk in upload_file.chunks():
+            newfile.write(chunk)
+    return filename, filepath
