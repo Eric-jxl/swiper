@@ -52,3 +52,8 @@ def superlike_someone(user, sid):
         # TODO: 给 对方 推送一条消息，通知新增好友
         return True
     return False
+
+
+def rewind(user):
+    '''反悔操作, 撤销上一次滑动操作'''
+    pass

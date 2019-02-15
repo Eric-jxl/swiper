@@ -32,6 +32,8 @@ def dislike(request):
 
 
 def rewind(request):
+    '''反悔'''
+    # 能不依赖客户端参数的，什么都不需要传
     return render_json()
 
 
