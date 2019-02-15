@@ -1,6 +1,7 @@
 from libs.http import render_json
 from social import logics
 from social.models import Swiped
+from social.models import Friend
 from user.models import User
 
 
@@ -47,4 +48,8 @@ def show_liked_me(request):
 
 
 def friends(request):
-    return render_json()
+    '''查看好友列表'''
+    friend_id_list = Friend.friend_list(request.user.id)
+    my_friends = User.objects.filter(id__in=friend_id_list)
+    friend_info = [friend.to_dict() for friend in my_friends]
+    return render_json(friend_info)
