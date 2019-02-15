@@ -2,6 +2,7 @@ import datetime
 
 from user.models import User
 from social.models import Swiped
+from social.models import Friend
 
 
 def rcmd(user):
@@ -31,13 +32,26 @@ def like_someone(user, sid):
     Swiped.objects.create(uid=user.id, sid=sid, flag='like')
 
     # 检查对方是否喜欢过我
-    if Swiped.is_liked(sid, uid):
-        # TODO: 如果喜欢过，建立好友关系
-        pass
+    if Swiped.is_liked(sid, user.id):
+        # 如果喜欢过，建立好友关系
+        Friend.make_friends(user.id, sid)
+        # TODO: 给 对方 推送一条消息，通知新增好友
+        return True
+    return False
 
 
 def superlike_someone(user, sid):
-    pass
+    '''超级喜欢'''
+    # 添加滑动记录
+    Swiped.objects.create(uid=user.id, sid=sid, flag='superlike')
+
+    # 检查对方是否喜欢过我
+    if Swiped.is_liked(sid, user.id):
+        # 如果喜欢过，建立好友关系
+        Friend.make_friends(user.id, sid)
+        # TODO: 给 对方 推送一条消息，通知新增好友
+        return True
+    return False
 
 
 def dislike_someone(user, sid):

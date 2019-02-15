@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Swiped(models.Model):
+    '''滑动记录'''
     FLAGS = (
         ('like', '喜欢'),
         ('superlike', '超级喜欢'),
@@ -17,3 +18,15 @@ class Swiped(models.Model):
         '''检查是否喜欢过某人'''
         return cls.objects.filter(uid=uid, sid=sid,
                                  flag__in=['like', 'superlike']).exists()
+
+
+class Friend(models.Model):
+    '''好友关系表'''
+    uid1 = models.IntegerField()
+    uid2 = models.IntegerField()
+
+    @classmethod
+    def make_friends(cls, uid1, uid2):
+        '''建立好友关系'''
+        uid1, uid2 = (uid2, uid1) if uid1 > uid2 else (uid1, uid2)
+        cls.objects.get_or_create(uid1=uid1, uid2=uid2)
