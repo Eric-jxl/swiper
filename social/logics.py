@@ -29,7 +29,7 @@ def rcmd(user):
 def like_someone(user, sid):
     '''喜欢'''
     # 添加滑动记录
-    Swiped.objects.create(uid=user.id, sid=sid, flag='like')
+    Swiped.swipe(user.id, sid, 'like')
 
     # 检查对方是否喜欢过我
     if Swiped.is_liked(sid, user.id):
@@ -43,7 +43,7 @@ def like_someone(user, sid):
 def superlike_someone(user, sid):
     '''超级喜欢'''
     # 添加滑动记录
-    Swiped.objects.create(uid=user.id, sid=sid, flag='superlike')
+    Swiped.swipe(user.id, sid, 'superlike')
 
     # 检查对方是否喜欢过我
     if Swiped.is_liked(sid, user.id):
@@ -52,7 +52,3 @@ def superlike_someone(user, sid):
         # TODO: 给 对方 推送一条消息，通知新增好友
         return True
     return False
-
-
-def dislike_someone(user, sid):
-    pass

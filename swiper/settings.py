@@ -45,6 +45,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'common.middleware.AuthMiddleware',
+    'common.middleware.LogicErrorMiddleware',
 ]
 
 ROOT_URLCONF = 'swiper.urls'

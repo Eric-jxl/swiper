@@ -1,5 +1,7 @@
 from django.db import models
 
+from common import errors
+
 
 class Swiped(models.Model):
     '''滑动记录'''
@@ -12,6 +14,16 @@ class Swiped(models.Model):
     sid = models.IntegerField(verbose_name='被滑动者的 uid')
     flag = models.CharField(max_length=16, choices=FLAGS, verbose_name='滑动类型')
     time = models.DateTimeField(auto_now_add=True, verbose_name='滑动时间')
+
+    @classmethod
+    def swipe(cls, uid, sid, flag):
+        '''记录滑动操作, 不允许重复滑动某一个人'''
+        flags = [_flag for _flag, _ in cls.FLAGS]
+        if flag not in flags:
+            raise errors.FlagErr()
+
+        cls.objects.update_or_create(uid=uid, sid=sid,
+                                     defaults={'flag': flag})
 
     @classmethod
     def is_liked(cls, uid, sid):

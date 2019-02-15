@@ -1,5 +1,6 @@
 from libs.http import render_json
 from social import logics
+from social.models import Swiped
 
 
 def rcmd_users(request):
@@ -25,7 +26,8 @@ def superlike(request):
 
 def dislike(request):
     '''不喜欢'''
-    sid = request.POST.get('sid')
+    sid = int(request.POST.get('sid'))
+    Swiped.swipe(request.user.id, sid, 'dislike')
     return render_json()
 
 
