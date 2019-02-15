@@ -20,9 +20,9 @@ def submit_phone(request):
         if send_vcode(phonenum):
             return render_json()
         else:
-            return render_json(code=errors.PLATFORM_ERR)
+            return render_json(code=errors.PlatformErr.code)
     else:
-        return render_json(code=errors.PHONE_ERR)
+        return render_json(code=errors.PhoneErr.code)
 
 
 def submit_vcode(request):
@@ -38,7 +38,7 @@ def submit_vcode(request):
         request.session['uid'] = user.id
         return render_json(data=user.to_dict())
     else:
-        return render_json(code=errors.VCODE_ERR)
+        return render_json(code=errors.VcodeErr.code)
 
 
 def get_profile(request):
@@ -57,7 +57,7 @@ def set_profile(request):
         profile.save()
         return render_json()
     else:
-        return render_json(form.errors, code=errors.PROFILE_ERR)
+        return render_json(form.errors, code=errors.ProfileErr.code)
 
 
 def upload_avatar(request):

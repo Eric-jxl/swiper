@@ -19,7 +19,13 @@ class AuthMiddleware(MiddlewareMixin):
         uid = request.session.get('uid')
         if not uid:
             # 如果未登录，返回错误码
-            return render_json(code=errors.LOGIN_REQUIRE)
+            return render_json(code=errors.LogicError.code)
         else:
             # 如果已登录，取出 user 对象，并绑定到 request
             request.user = User.objects.get(id=uid)
+
+
+class LogicErrorMiddleware(MiddlewareMixin):
+    def process_exception(self, request, exception):
+        if isinstance(exception, errors.LogicError):
+            return render_json(code=exception.code)

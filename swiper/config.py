@@ -1,5 +1,8 @@
 '''项目逻辑配置及第三方平台配置'''
 
+REWIND_TIMES = 3  # 每日反悔次数
+
+
 # 云之讯短信平台配置
 YZX_SMS_API = 'https://open.ucpaas.com/ol/sms/sendsms'
 YZX_SMS_PARAMS = {
