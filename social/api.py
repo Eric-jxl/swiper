@@ -1,13 +1,14 @@
 from libs.http import render_json
 from social import logics
 from social.models import Swiped
+from user.models import User
 
 
 def rcmd_users(request):
     '''获取推荐用户列表'''
     users = logics.rcmd(request.user)
-    data = [user.to_dict() for user in users]
-    return render_json(data)
+    user_info = [user.to_dict() for user in users]
+    return render_json(user_info)
 
 
 def like(request):
@@ -39,7 +40,10 @@ def rewind(request):
 
 
 def show_liked_me(request):
-    return render_json()
+    uid_list = Swiped.who_liked_me(request.user.id)
+    users = User.objects.filter(id__in=uid_list)
+    user_info = [user.to_dict() for user in users]
+    return render_json(user_info)
 
 
 def friends(request):
