@@ -33,7 +33,8 @@ def dislike(request):
 
 def rewind(request):
     '''反悔'''
-    # 能不依赖客户端参数的，什么都不需要传
+    # 可以不依赖客户端参数，什么都不需要传
+    logics.rewind(request.user)
     return render_json()
 
 
