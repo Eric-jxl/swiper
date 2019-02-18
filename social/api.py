@@ -3,6 +3,7 @@ from social import logics
 from social.models import Swiped
 from social.models import Friend
 from user.models import User
+from vip.logics import need_perm
 
 
 def rcmd_users(request):
@@ -19,6 +20,7 @@ def like(request):
     return render_json({'is_matched': matched})
 
 
+@need_perm('superlike')
 def superlike(request):
     '''超级喜欢'''
     sid = int(request.POST.get('sid'))
@@ -33,6 +35,7 @@ def dislike(request):
     return render_json()
 
 
+@need_perm('rewind')
 def rewind(request):
     '''反悔'''
     # 可以不依赖客户端参数，什么都不需要传
@@ -40,6 +43,7 @@ def rewind(request):
     return render_json()
 
 
+@need_perm('show_liked_me')
 def show_liked_me(request):
     uid_list = Swiped.who_liked_me(request.user.id)
     users = User.objects.filter(id__in=uid_list)

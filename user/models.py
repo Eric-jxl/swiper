@@ -3,6 +3,7 @@ import datetime
 from django.db import models
 
 from libs.orm import ModelMixin
+from vip.models import Vip
 
 
 class User(models.Model):
@@ -30,6 +31,8 @@ class User(models.Model):
     avatar = models.CharField(max_length=256, verbose_name='个人头像的 URL 地址')
     location = models.CharField(max_length=16, choices=LOCATION, verbose_name='常居地')
 
+    vip_id = models.IntegerField(default=1, verbose_name='用户对应的会员')
+
     @property
     def age(self):
         '''用户年龄'''
@@ -43,6 +46,13 @@ class User(models.Model):
         if not hasattr(self, '_profile'):
             self._profile, _ = Profile.objects.get_or_create(id=self.id)
         return self._profile
+
+    @property
+    def vip(self):
+        '''用户的 VIP'''
+        if not hasattr(self, '_vip'):
+            self._vip = Vip.objects.get(id=self.vip_id)
+        return self._vip
 
     def to_dict(self):
         return {
