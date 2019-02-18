@@ -1,3 +1,5 @@
+import logging
+
 from django.core.cache import cache
 from django.conf import settings
 
@@ -9,6 +11,8 @@ from user.logics import send_vcode
 from user.logics import save_avatar
 from user.models import User
 from user.forms import ProfileForm
+
+inf_log = logging.getLogger('inf')
 
 
 def submit_phone(request):
@@ -35,6 +39,7 @@ def submit_vcode(request):
     if vcode == cached_vcode:
         # 执行登录、注册
         user, _ = User.objects.get_or_create(phonenum=phone, nickname=phone)
+        inf_log.info(f'uid = {user.id}')
         request.session['uid'] = user.id
         return render_json(data=user.to_dict())
     else:
