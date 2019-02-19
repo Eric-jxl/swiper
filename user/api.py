@@ -38,7 +38,7 @@ def submit_vcode(request):
     cached_vcode = cache.get(keys.VCODE % phone)
     if vcode == cached_vcode:
         # 执行登录、注册
-        user, _ = User.objects.get_or_create(phonenum=phone, nickname=phone)
+        user, _ = User.get_or_create(phonenum=phone, nickname=phone)
         inf_log.info(f'uid = {user.id}')
         request.session['uid'] = user.id
         return render_json(data=user.to_dict())
@@ -49,7 +49,19 @@ def submit_vcode(request):
 def get_profile(request):
     '''获取个人资料'''
     user = request.user
-    profile_data = user.profile.to_dict('vibration', 'only_matche', 'auto_play')
+
+    # 定义 key，并从缓存中获取
+    key = keys.PROFILE % user.id
+    profile_data = cache.get(key)
+    print('get from cache: %s' % profile_data)
+
+    # 如果缓存中没有数据，从数据库获取，将取到的数据写入缓存
+    if profile_data is None:
+        profile_data = user.profile.to_dict('vibration', 'only_matche', 'auto_play')
+        print('get from DB: %s' % profile_data)
+        cache.set(key, profile_data)
+        print('set to cache')
+
     return render_json(profile_data)
 
 
@@ -60,6 +72,12 @@ def set_profile(request):
         profile = form.save(commit=False)
         profile.id = request.user.id
         profile.save()
+
+        # 数据发生变化后，更新缓存
+        key = keys.PROFILE % profile.id
+        profile_data = profile.to_dict('vibration', 'only_matche', 'auto_play')
+        cache.set(key, profile_data)
+
         return render_json()
     else:
         return render_json(form.errors, code=errors.ProfileErr.code)

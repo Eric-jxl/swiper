@@ -50,7 +50,7 @@ class Friend(models.Model):
     def make_friends(cls, uid1, uid2):
         '''建立好友关系'''
         uid1, uid2 = (uid2, uid1) if uid1 > uid2 else (uid1, uid2)
-        cls.objects.get_or_create(uid1=uid1, uid2=uid2)
+        cls.get_or_create(uid1=uid1, uid2=uid2)
 
     @classmethod
     def friend_list(cls, uid):

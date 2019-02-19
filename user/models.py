@@ -2,7 +2,6 @@ import datetime
 
 from django.db import models
 
-from libs.orm import ModelMixin
 from vip.models import Vip
 
 
@@ -44,14 +43,14 @@ class User(models.Model):
     def profile(self):
         '''用户个人资料'''
         if not hasattr(self, '_profile'):
-            self._profile, _ = Profile.objects.get_or_create(id=self.id)
+            self._profile, _ = Profile.get_or_create(id=self.id)
         return self._profile
 
     @property
     def vip(self):
         '''用户的 VIP'''
         if not hasattr(self, '_vip'):
-            self._vip = Vip.objects.get(id=self.vip_id)
+            self._vip = Vip.get(id=self.vip_id)
         return self._vip
 
     def to_dict(self):
@@ -66,7 +65,7 @@ class User(models.Model):
         }
 
 
-class Profile(models.Model, ModelMixin):
+class Profile(models.Model):
     '''个人资料'''
     SEX = (
         ('male', '男性'),
