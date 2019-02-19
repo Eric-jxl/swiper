@@ -13,6 +13,7 @@ def rcmd_users(request):
     return render_json(user_info)
 
 
+@logics.add_swipe_score
 def like(request):
     '''喜欢'''
     sid = int(request.POST.get('sid'))
@@ -21,6 +22,7 @@ def like(request):
 
 
 @need_perm('superlike')
+@logics.add_swipe_score
 def superlike(request):
     '''超级喜欢'''
     sid = int(request.POST.get('sid'))
@@ -28,6 +30,7 @@ def superlike(request):
     return render_json({'is_matched': matched})
 
 
+@logics.add_swipe_score
 def dislike(request):
     '''不喜欢'''
     sid = int(request.POST.get('sid'))
@@ -57,3 +60,9 @@ def friends(request):
     my_friends = User.objects.filter(id__in=friend_id_list)
     friend_info = [friend.to_dict() for friend in my_friends]
     return render_json(friend_info)
+
+
+def top10(request):
+    rank_data = logics.get_top_n(10)
+    result = [[user.to_dict(), score] for user, score in rank_data]
+    return render_json(result)

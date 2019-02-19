@@ -2,6 +2,12 @@
 
 REWIND_TIMES = 3  # 每日反悔次数
 
+SWIPE_SCORE = {
+    'dislike': -5,
+    'like': 5,
+    'superlike': 7,
+}
+
 
 # 云之讯短信平台配置
 YZX_SMS_API = 'https://open.ucpaas.com/ol/sms/sendsms'
