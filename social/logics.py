@@ -74,7 +74,6 @@ def rewind(user):
 
         # 通过时间戳计算今天的剩余秒数
         # timeout = 86400 - (time.time() + 3600 * 8) % 86400
-
         cache.set(key, rewind_times + 1, timeout)  # 计数加一，并设置有效期到今晚 0 点
 
     # 取出上一次操作
@@ -86,6 +85,10 @@ def rewind(user):
     # 检查上一次是否完成过匹配，如果完成匹配需撤销好友关系
     if swiped.flag in ['like', 'superlike']:
         Friend.break_off(user.id, swiped.sid)
+
+    # 撤销之前滑动的积分
+    score = config.SWIPE_SCORE.get(swiped.flag, 0)  # 根据函数名取出对应的积分
+    rds.zincrby(keys.HOT_RANK, swiped.sid, -score)  # 撤销之前的积分
 
     swiped.delete()
 
