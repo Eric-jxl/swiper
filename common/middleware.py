@@ -13,6 +13,7 @@ class AuthMiddleware(MiddlewareMixin):
     WHITE_LIST = [
         '/api/user/submit_phone',
         '/api/user/submit_vcode',
+        '/api/vip/show_vip'
     ]
 
     def process_request(self, request):
@@ -23,7 +24,7 @@ class AuthMiddleware(MiddlewareMixin):
         uid = request.session.get('uid')
         if not uid:
             # 如果未登录，返回错误码
-            return render_json(code=errors.LogicError.code)
+            return render_json(code=errors.LoginRequire.code)
         else:
             # 如果已登录，取出 user 对象，并绑定到 request
             request.user = User.get(id=uid)

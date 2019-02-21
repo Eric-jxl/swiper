@@ -2,7 +2,7 @@ import datetime
 
 from django.core.cache import cache
 
-from libs import rds
+from libs.cache import rds
 from swiper import config
 from common import keys
 from common import errors
