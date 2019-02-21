@@ -106,3 +106,4 @@ medias/
 .qiniu_pythonsdk_hostscache.json
 .DS_Store
 .idea
+logs/
